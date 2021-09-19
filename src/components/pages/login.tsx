@@ -1,20 +1,27 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Container, Header, Input } from 'semantic-ui-react';
+import { Button, Container, Header, Input, Modal } from 'semantic-ui-react';
+import { useAppDispatch } from '../../app/hooks';
+import { push } from 'connected-react-router';
+import { Paths } from '../../routers/routers';
+import { Users } from '../users/users';
 
+const style = {
+  width: '100%',
+  margin: '0 auto',
+  marginTop: '30px',
+};
 const Login = () => {
+  const dispatch = useAppDispatch();
   // - state -
-  const [name, setName] = useState('');
+  const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
   const [isValid, setIsValid] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
-  // - const -
-  const userName = 'guest';
-  const password = '1234';
+  const [open, setOpen] = useState(false);
   // - ref -
   const passRef: any = useRef(null);
   // - function -
-  const handleChangeName = (v: string) => {
-    setName(v);
+  const handleChangeMail = (v: string) => {
+    setMail(v);
   };
   const handleChangePass = useCallback(
     (v) => {
@@ -22,7 +29,17 @@ const Login = () => {
     },
     [],
   );
+  const handleClickLogin = () => {
+    for (let i = 0; i < Users.length; i++) {
+      if (Users[i].mail === mail && Users[i].pass === pass) {
+        const path = Paths.balance
+          .replace(':mail', Users[i].mail);
+        return dispatch(push(path));
 
+      }
+    }
+    setOpen(true);
+  };
   // - effect -
   useEffect(() => {
     if (pass.length >= 8) {
@@ -30,60 +47,90 @@ const Login = () => {
     } else {
       setIsValid(false);
     }
-  }, [name, pass]);
-
-  useEffect(() => {
-    if (name === userName) {
-      passRef.current.focus()
-    }
-  }, [name]);
+  }, [mail, pass]);
 
   return (
     <>
-      <Container>
+      <div style={style}>
         <Header
           dividing
           size={'large'}
         >
-          {isLogin ? `ようこそ! ${name}さん ` : 'Login'}
+          ATM
         </Header>
-        {isLogin ?
-          <>
-          </>
-          :
-          <>
-            <div
-              style={{
-                marginTop: '20px',
+        <Container>
+          <div
+            style={{
+              marginTop: '20px',
+            }}
+          >
+            <Input
+              size={'large'}
+              label="メールアドレス"
+              onChange={
+                (e) => handleChangeMail(e.target.value)
+              }
+              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                if (e.key === 'Enter') {
+                  e.currentTarget.blur();
+                  passRef.current.focus();
+                }
               }}
-            >
-              <Input
-                label="name"
-                onChange={
-                  (e) => handleChangeName(e.target.value)
+            />
+          </div>
+          <br />
+          <div>
+            <Input
+              size={'large'}
+              type="password"
+              label="　パスワード　"
+              error={!isValid}
+              onChange={
+                (e) => handleChangePass(e.target.value)
+              }
+              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                if (e.key === 'Enter') {
+                  e.currentTarget.blur();
+                  isValid && handleClickLogin();
                 }
-              />
-            </div>
-            <br />
-            <div>
-              <Input
-                type="password"
-                label="pass"
-                onChange={
-                  (e) => handleChangePass(e.target.value)
-                }
-                ref={passRef}
-              />
-            </div>
-            <br />
-            <Button
-              primary={isValid}
-              disabled={!isValid}
-              onClick={() => setIsLogin(true)}
-            >Login</Button>
-          </>
-        }
-      </Container>
+              }}
+              ref={passRef}
+            />
+          </div>
+          <br />
+          <Button
+            primary={isValid}
+            disabled={!isValid}
+            onClick={handleClickLogin}
+          >ログイン</Button>
+          <Modal
+            size="small"
+            open={open}
+            onClose={() => setOpen(false)}
+          >
+            <Modal.Header>
+              確認
+            </Modal.Header>
+            <Modal.Content>
+              <p>メールアドレスまたはパスワードが一致しません。</p>
+            </Modal.Content>
+            <Modal.Actions>
+              <Button
+                negative
+                onClick={() => setOpen(false)}
+              >
+                閉じる
+              </Button>
+            </Modal.Actions>
+          </Modal>
+          {isValid ?
+            <></> :
+            <>
+              <p style={{ color: 'red', marginTop: '10px' }}>パスワードは８文字以上で入力して下さい。</p>
+            </>
+          }
+        </Container>
+      </div>
     </>
   );
 };

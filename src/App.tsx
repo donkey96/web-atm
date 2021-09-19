@@ -9,18 +9,11 @@ import { history } from './app/store';
 import { Routes } from './routers/routers';
 
 function App() {
-  const style = {
-    width: '100%',
-    margin: '0 auto',
-    marginTop: '30px',
-  };
   return (
     <div className="App">
-      <div style={style}>
         <ConnectedRouter history={history}>
           {Routes}
         </ConnectedRouter>
-      </div>
       {/*<header className="App-header">*/}
       {/*  <img src={logo} className="App-logo" alt="logo" />*/}
       {/*  <Counter />*/}
