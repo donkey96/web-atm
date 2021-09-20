@@ -42,13 +42,13 @@ export const Header = (props: props) => {
        <Menu.Item
        header
        >
-         <h2 style={{textAlign: 'center', width: '80px'}}>ATM</h2>
+         <h2 style={{width: '80px', margin: '10px 10px 10px 0px'}}>ATM</h2>
+         <p style={{}}>{user.name} 様</p>
        </Menu.Item>
        <Menu.Menu
        position={'left'}
        >
        <Menu.Item>
-         {user.name} 様
        </Menu.Item>
        <Menu.Item
          as={'a'}
