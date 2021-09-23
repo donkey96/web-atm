@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from '../ui/header.';
-import { Users, userType } from '../users/users';
+import { Users, userType } from '../../users/users';
 import { Paths } from '../../routers/routers';
 import { push } from 'connected-react-router';
 import { useAppDispatch } from '../../app/hooks';
@@ -17,6 +17,7 @@ export const Withdrawal = (props: WithdrawalProps) => {
     credit: 0,
     mail: '',
     pass: '',
+    transactions: []
   });
 
   useEffect(() => {
