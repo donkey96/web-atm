@@ -38,7 +38,7 @@ export const CommonTable = (props: props) => {
                 negative={(body.transactionAmount < 0)}
                 >
                   <Table.Cell textAlign={'center'} key={`${index}_${body.date}`}>{body.date}</Table.Cell>
-                  <Table.Cell textAlign={'right'} key={`${index}_${body.transactionAmount}`}>{(body.transactionAmount>= 0 ? '+' : '') + body.transactionAmount.toLocaleString()} 円</Table.Cell>
+                  <Table.Cell textAlign={'right'} key={`${index}_${body.transactionAmount}`}>{(body.transactionAmount > 0 ? '+' : '') + body.transactionAmount.toLocaleString()} 円</Table.Cell>
                   <Table.Cell textAlign={'right'} key={`${index}_${body.credit}`}>{body.credit.toLocaleString()} 円</Table.Cell>
                 </Table.Row>
               ),
