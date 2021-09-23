@@ -4,8 +4,7 @@ import { Users, userType } from '../../users/users';
 import { Paths } from '../../routers/routers';
 import { push } from 'connected-react-router';
 import { useAppDispatch } from '../../app/hooks';
-import { Button, Checkbox, Dimmer, Loader, Modal, Segment } from 'semantic-ui-react';
-import { CommonTable } from '../ui/common-table';
+import { Button, Modal, Segment } from 'semantic-ui-react';
 import { Keypad } from '../ui/keypad';
 import { DateFormatter } from '../../utilities/date-formatter';
 
