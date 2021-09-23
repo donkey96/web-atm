@@ -49,7 +49,7 @@ export const CommonTable = (props: props) => {
             <Table.HeaderCell colSpan={'3'}>
               <Pagination
                 defaultActivePage={1}
-                totalPages={bodyList!.length/10}
+                totalPages={Math.ceil(bodyList!.length/10)}
                 onPageChange={(e,{activePage}) => setActivePage(Number(activePage))}
                 ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
                 firstItem={{ content: <Icon name='angle double left' />, icon: true }}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Icon, Input, Modal, Table } from 'semantic-ui-react';
 import { userType } from '../../users/users';
 
-const MAX_NUM = 500000000000;
+const MAX_NUM = 500000;
 
 type props = {
   type: 'deposit' | 'withdrawal',
