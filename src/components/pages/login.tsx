@@ -3,7 +3,7 @@ import { Button, Container, Header, Input, Modal } from 'semantic-ui-react';
 import { useAppDispatch } from '../../app/hooks';
 import { push } from 'connected-react-router';
 import { Paths } from '../../routers/routers';
-import { Users } from '../users/users';
+import { Users } from '../../users/users';
 
 const style = {
   width: '100%',
