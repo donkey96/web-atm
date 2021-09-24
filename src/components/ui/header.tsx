@@ -1,41 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu, Popup } from 'semantic-ui-react';
-import { Users, userType } from '../../users/users';
+import { userType } from '../../users/users';
 import { useAppDispatch } from '../../app/hooks';
 import { push } from 'connected-react-router';
 import { Paths } from '../../routers/routers';
+import { useLocation } from 'react-router-dom';
 
 type props = {
-  user: userType
-  active: 'balance' | 'deposit' | 'withdrawal'
+  user: userType,
+  active: 'balance' | 'deposit' | 'withdrawal',
+  page?: number
 }
 
 export const Header = (props: props) => {
-  const { user, active } = props;
+  const { user, active, page } = props;
   const dispatch = useAppDispatch();
-  // - state -
+  const search = useLocation().search;
+  const searchParams = new URLSearchParams(search)
   // - function -
   const handleClickBalance = () => {
     {
       const path = Paths.balance
         .replace(':mail', user.mail);
-      dispatch(push(path));
+      const query = searchParams.toString()
+      dispatch(push(`${path}?${query}`));
     }
   };
   const handleClickWithdrawal = () => {
     {
       const path = Paths.withdrawal
         .replace(':mail', user.mail);
-      dispatch(push(path));
+      const query = searchParams.toString()
+      dispatch(push(`${path}?${query}`));
     }
   };
   const handleClickDeposit = () => {
     {
       const path = Paths.deposit
         .replace(':mail', user.mail);
-      dispatch(push(path));
+      const query = searchParams.toString()
+      dispatch(push(`${path}?${query}`));
     }
   };
+  // - effect -
+  useEffect(() => {
+    if (page) {
+      searchParams.set('p', String(page))
+    }
+  }, [page]);
+
   return (
     <>
       <Menu

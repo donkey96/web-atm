@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, Pagination, Table } from 'semantic-ui-react';
 import { transactionData } from '../../users/users';
+import { useLocation } from 'react-router-dom';
 
 type props = {
   headerList: string[],
-  bodyList: transactionData[] | null
+  bodyList: transactionData[] | null,
+  page: number,
+  setPage:  React.Dispatch<React.SetStateAction<number>>,
 }
 
 export const CommonTable = (props: props) => {
-  const [activePage, setActivePage] = useState(1);
-
-  const { headerList, bodyList } = props;
+  const { headerList, bodyList,page, setPage } = props;
+  // - queryParams -
+  const searchParams = useLocation().search;
+  const query = new URLSearchParams(searchParams);
+  // - state -
+  const [activePage, setActivePage] = useState(page);
+  // - const -
   const num = 10 * (activePage - 1)
   const showList = bodyList?.slice(num, num + 9)
-
   return (
     <>
       <Table
@@ -34,6 +40,7 @@ export const CommonTable = (props: props) => {
           {
             showList?.map((body, index) => (
                 <Table.Row
+                  key={`${index}_${body}`}
                 positive={(body.transactionAmount >= 0)}
                 negative={(body.transactionAmount < 0)}
                 >
@@ -48,9 +55,12 @@ export const CommonTable = (props: props) => {
           <Table.Row textAlign={'center'}>
             <Table.HeaderCell colSpan={'3'}>
               <Pagination
-                defaultActivePage={1}
+                defaultActivePage={page}
                 totalPages={Math.ceil(bodyList!.length/10)}
-                onPageChange={(e,{activePage}) => setActivePage(Number(activePage))}
+                onPageChange={(e,{activePage}) => {
+                  setActivePage(Number(activePage));
+                  setPage(Number(activePage))
+                }}
                 ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
                 firstItem={{ content: <Icon name='angle double left' />, icon: true }}
                 lastItem={{ content: <Icon name='angle double right' />, icon: true }}

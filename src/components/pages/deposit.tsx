@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from '../ui/header.';
+import { Header } from '../ui/header';
 import { Users, userType } from '../../users/users';
 import { Paths } from '../../routers/routers';
 import { push } from 'connected-react-router';
