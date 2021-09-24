@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from '../ui/header.';
+import { Header } from '../ui/header';
 import { Users, userType } from '../../users/users';
 import { Paths } from '../../routers/routers';
 import { push } from 'connected-react-router';
@@ -26,7 +26,7 @@ export const Withdrawal = (props: WithdrawalProps) => {
   const [transaction, setTransaction] = useState<'success' | 'failed'>('failed');
 
   const withdrawalExecution = (num: number) => {
-    if (user.credit - num < 0) {
+    if (user.credit - (num + 210) < 0) {
       setTransaction('failed');
       setOpen(true);
       return;

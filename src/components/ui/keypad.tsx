@@ -130,7 +130,7 @@ export const Keypad = (props: props) => {
               <Button
                 size={'big'}
                 color={'teal'}
-                disabled={!totalNum}
+                disabled={totalNum < 210}
                 onClick={() => setOpen(true)}
               >確認</Button>
             </Table.Cell>
@@ -146,7 +146,16 @@ export const Keypad = (props: props) => {
           確認
         </Modal.Header>
         <Modal.Content>
-          <p>{type === 'withdrawal' ? `${totalNum}円を引き出します。`: `${totalNum}円を入金します。`}</p>
+          <p>
+            {type === 'withdrawal' ? `${totalNum}円を引き出します。`: `${totalNum}円を入金します。`}
+            <span
+              style={{
+                fontSize: '12px',
+                color: 'red',
+              }}
+            >（手数料：210円）
+            </span>
+          </p>
           <p>取引を実行してもよろしいですか？</p>
         </Modal.Content>
         <Modal.Actions>

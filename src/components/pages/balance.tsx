@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from '../ui/header.';
+import { Header } from '../ui/header';
 import { Users, userType } from '../../users/users';
-import { Paths } from '../../routers/routers';
-import { push } from 'connected-react-router';
-import { useAppDispatch } from '../../app/hooks';
 import { CommonTable } from '../ui/common-table';
-import { Button, Checkbox, Dimmer, Loader, Segment } from 'semantic-ui-react';
+import { Checkbox, Dimmer, Loader, Segment } from 'semantic-ui-react';
+import {useLocation} from 'react-router-dom';
 
 export type BalanceProps = {
   mail: string
 }
 
 export const Balance = (props: BalanceProps) => {
-  const dispatch = useAppDispatch();
   const { mail } = props;
+  // - queryParams -
+  const searchParams = useLocation().search;
   // - state -
   const [user, setUser] = useState<userType>({
     name: '',
@@ -24,6 +23,7 @@ export const Balance = (props: BalanceProps) => {
   });
   const [isShowList, setIsShowList] = useState(false);
   const [loaderFlag, setLoaderFlag] = useState(true);
+  const [page, setPage] = useState(1);
   // - function -
   const handleChangeCheckBox = (v: boolean) => {
     if (!v) {
@@ -48,12 +48,23 @@ export const Balance = (props: BalanceProps) => {
     '取引額',
     '取引後残高',
   ];
+  // - searchParams -
+  useEffect(() => {
+    const query = new URLSearchParams(searchParams);
+    const currentPage = (query.get('p'))
+    if (typeof currentPage === 'string') {
+    setPage(Number(currentPage))
+    } else {
+      setPage(1)
+    }
+  }, []);
 
   return (
     <>
       <Header
         user={user}
         active={'balance'}
+        page={page}
       />
       <div>
         <h3
@@ -79,7 +90,13 @@ export const Balance = (props: BalanceProps) => {
               }}
             >
               {!loaderFlag ?
-                <CommonTable headerList={tableHeaderList} bodyList={user.transactions} />
+                <CommonTable
+                  headerList={tableHeaderList}
+                  bodyList={user.transactions}
+                  page={page}
+                  setPage={setPage}
+
+                />
                 : <Dimmer active>
                   <Loader>Loading</Loader>
                 </Dimmer>
